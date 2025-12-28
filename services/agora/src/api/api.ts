@@ -3781,7 +3781,7 @@ export interface ApiV1OpinionFetchAnalysisByConversationPost200Response {
      * @type {ApiV1OpinionFetchAnalysisByConversationPost200ResponseClusters}
      * @memberof ApiV1OpinionFetchAnalysisByConversationPost200Response
      */
-    'clusters': ApiV1OpinionFetchAnalysisByConversationPost200ResponseClusters;
+    'clusters'?: ApiV1OpinionFetchAnalysisByConversationPost200ResponseClusters;
 }
 /**
  * 
