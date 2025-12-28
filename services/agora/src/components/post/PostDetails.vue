@@ -3,7 +3,7 @@
     <ZKHoverEffect
       :enable-hover="compactMode"
       :background-color="compactMode ? 'white' : undefined"
-      hover-background-color="#e2e8f0"
+      hover-variant="medium"
     >
       <div class="container standardStyle">
         <PostContent

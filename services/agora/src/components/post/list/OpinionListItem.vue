@@ -10,7 +10,7 @@
     <ZKHoverEffect
       :enable-hover="true"
       background-color="white"
-      hover-background-color="#e2e8f0"
+      hover-variant="medium"
     >
       <div class="commentItemStyle">
         <div class="topRowFlex">

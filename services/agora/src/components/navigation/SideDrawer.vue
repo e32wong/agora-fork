@@ -27,11 +27,7 @@
             class="navigation-link"
             @click="handleNavigationClick"
           >
-            <ZKHoverEffect
-              enable-hover
-              hover-background-color="#f3f4f6"
-              border-radius="15px"
-            >
+            <ZKHoverEffect enable-hover border-radius="15px">
               <div
                 class="settingItemStyle"
                 :class="{
