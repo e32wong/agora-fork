@@ -59,12 +59,17 @@
               aria-hidden="true"
             />
             <p>{{ t("completedMessage") }}</p>
-            <PrimeButton
+            <ButtonLink
               v-if="importStatusQuery.data.value.conversationSlugId"
+              :to="{
+                name: '/conversation/[postSlugId]',
+                params: {
+                  postSlugId: importStatusQuery.data.value.conversationSlugId,
+                },
+              }"
               :label="t('viewConversation')"
               icon="pi pi-arrow-right"
               class="view-conversation-button"
-              @click="handleViewConversation"
             />
           </div>
           <div
@@ -98,13 +103,13 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import AsyncStateHandler from "src/components/ui/AsyncStateHandler.vue";
+import ButtonLink from "src/components/ui-library/ButtonLink.vue";
 import { useComponentI18n } from "src/composables/ui/useComponentI18n";
 import type { ImportFailureReason } from "src/shared/types/zod";
 import { useAuthenticationStore } from "src/stores/authentication";
 import { useImportStatusQuery } from "src/utils/api/conversationImport/useConversationImportQueries";
 import { formatDateTime } from "src/utils/format";
 import { computed } from "vue";
-import { useRouter } from "vue-router";
 
 import {
   type ImportStatusViewTranslations,
@@ -124,22 +129,10 @@ const { t } = useComponentI18n<ImportStatusViewTranslations>(
 const authStore = useAuthenticationStore();
 const { isAuthInitialized, isGuestOrLoggedIn } = storeToRefs(authStore);
 
-const router = useRouter();
-
 const importStatusQuery = useImportStatusQuery({
   importSlugId: props.importSlugId,
   enabled: computed(() => isAuthInitialized.value && isGuestOrLoggedIn.value),
 });
-
-function handleViewConversation(): void {
-  const data = importStatusQuery.data.value;
-  if (!data || data.status !== "completed") return;
-
-  void router.push({
-    name: "/conversation/[postSlugId]",
-    params: { postSlugId: data.conversationSlugId },
-  });
-}
 
 function getFailureReasonText(reason: ImportFailureReason): string {
   switch (reason) {
