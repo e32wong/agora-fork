@@ -52,6 +52,8 @@ const buttonClasses = computed(() => [
 </script>
 
 <style lang="scss" scoped>
+@use "sass:color";
+
 .button-link {
   display: inline-flex;
   align-items: center;
@@ -80,7 +82,7 @@ const buttonClasses = computed(() => [
     color: white;
 
     &:hover:not(.button-link--disabled) {
-      background-color: darken($primary, 10%);
+      background-color: color.adjust($primary, $lightness: -10%);
     }
 
     &:focus-visible {
