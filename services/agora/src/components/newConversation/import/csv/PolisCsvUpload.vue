@@ -69,7 +69,6 @@ import ZKCard from "src/components/ui-library/ZKCard.vue";
 import { useComponentI18n } from "src/composables/ui/useComponentI18n";
 import { MAX_CSV_FILE_SIZE_MB } from "src/shared-app-api/csvUpload";
 import { useAuthenticationStore } from "src/stores/authentication";
-import { useNewPostDraftsStore } from "src/stores/newConversationDrafts";
 import { useBackendPostApi } from "src/utils/api/post/post";
 import { ref, watch } from "vue";
 
@@ -84,7 +83,20 @@ const { t } = useComponentI18n<PolisCsvUploadTranslations>(
   polisCsvUploadTranslations
 );
 
-const store = useNewPostDraftsStore();
+// Define v-model for CSV file metadata
+const csvFileMetadata = defineModel<{
+  summary: { name: string; size: number } | null;
+  comments: { name: string; size: number } | null;
+  votes: { name: string; size: number } | null;
+}>("csvFileMetadata", {
+  required: false,
+  default: () => ({
+    summary: null,
+    comments: null,
+    votes: null,
+  }),
+});
+
 const { validateCsvFiles } = useBackendPostApi();
 const { isLoggedIn } = storeToRefs(useAuthenticationStore());
 
@@ -168,10 +180,10 @@ async function validateSingleFile(
 }
 
 /**
- * Updates store with file metadata
+ * Updates CSV file metadata v-model
  */
-function updateStoreMetadata(): void {
-  store.conversationDraft.importSettings.csvFileMetadata = {
+function updateCsvFileMetadata(): void {
+  csvFileMetadata.value = {
     summary: summaryFile.file.value
       ? { name: summaryFile.file.value.name, size: summaryFile.file.value.size }
       : null,
@@ -226,12 +238,12 @@ function reset(): void {
   summaryFile.removeFile();
   commentsFile.removeFile();
   votesFile.removeFile();
-  updateStoreMetadata();
+  updateCsvFileMetadata();
 }
 
-// Watch for file changes to update store metadata
+// Watch for file changes to update CSV file metadata v-model
 watch([summaryFile.file, commentsFile.file, votesFile.file], () => {
-  updateStoreMetadata();
+  updateCsvFileMetadata();
 });
 
 // Expose methods to parent
