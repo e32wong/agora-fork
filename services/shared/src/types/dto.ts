@@ -9,6 +9,7 @@ import {
     zodPollOptionTitle,
     zodConversationTitle,
     zodConversationBodyInput,
+    zodConversationBodyOutput,
     zodOpinionContentInput,
     zodVotingOption,
     zodVotingAction,
@@ -366,7 +367,7 @@ export class Dto {
                 createdAt: zodDateTimeFlexible,
                 updatedAt: zodDateTimeFlexible,
                 hasPoll: z.boolean(),
-                seedOpinionCount: z.number().int().nonnegative(),
+                isLocked: z.boolean(),
             })
             .strict(),
         z
@@ -402,6 +403,7 @@ export class Dto {
                     "not_found",
                     "not_author",
                     "conversation_locked",
+                    "invalid_access_settings",
                 ]),
             })
             .strict(),
