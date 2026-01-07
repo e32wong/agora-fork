@@ -88,12 +88,12 @@ import Underline from "@tiptap/extension-underline";
 import { DOMSerializer } from "@tiptap/pm/model";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 import StarterKit from "@tiptap/starter-kit";
-import { EditorContent,useEditor } from "@tiptap/vue-3";
+import { EditorContent, useEditor } from "@tiptap/vue-3";
 import { BubbleMenu } from "@tiptap/vue-3/menus";
 import { useQuasar } from "quasar";
 import sanitizeHtml from "sanitize-html";
 import { htmlToCountedText } from "src/shared/shared";
-import { onBeforeUnmount,watch } from "vue";
+import { onBeforeUnmount, watch } from "vue";
 
 import EditorToolbarButton from "./EditorToolbarButton.vue";
 
@@ -101,7 +101,6 @@ const props = defineProps<{
   showToolbar: boolean;
   placeholder: string;
   minHeight: string;
-  disabled: boolean;
   singleLine: boolean;
   maxLength: number;
 }>();
@@ -188,7 +187,6 @@ const createCharacterLimitExtension = (maxLength: number) =>
 
 const editor = useEditor({
   content: modelText.value,
-  editable: !props.disabled,
   extensions: [
     StarterKit.configure({
       // Disable features we don't need
@@ -275,16 +273,6 @@ watch(
       if (newValue !== currentContent) {
         editor.value.commands.setContent(newValue);
       }
-    }
-  }
-);
-
-// Watch for disabled prop changes to update editor
-watch(
-  () => props.disabled,
-  (newDisabled) => {
-    if (editor.value) {
-      editor.value.setEditable(!newDisabled);
     }
   }
 );
